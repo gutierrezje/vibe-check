@@ -1,3 +1,8 @@
+- targetting before or after they lauch
+- target before would be easier what metrics are you looking at for each
+- take in an image, upload an image, speak to an AI and outputs analyses
+
+
 # React + TypeScript + Vite
 
 This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
