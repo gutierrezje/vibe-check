@@ -1,46 +1,60 @@
-import type React from "react"
+import type React from "react";
 
-import { useState } from "react"
-import { Upload, Sparkles, TrendingUp } from "lucide-react"
-import { Button } from "@/components/ui/button"
-import { Card } from "@/components/ui/card"
-import { Label } from "@/components/ui/label"
-import { Textarea } from "@/components/ui/textarea"
-import { ImageUpload } from "@/components/image-upload"
+import { useState } from "react";
+import { Upload, Sparkles, TrendingUp } from "lucide-react";
+import { Button } from "@/components/ui/button";
+import { Card } from "@/components/ui/card";
+import { Label } from "@/components/ui/label";
+import { Textarea } from "@/components/ui/textarea";
+import { ImageUpload } from "@/components/image-upload";
 
 export function UploadForm() {
-  const [image, setImage] = useState<File | null>(null)
-  const [imagePreview, setImagePreview] = useState<string | null>(null)
-  const [prompt, setPrompt] = useState("")
-  const [isAnalyzing, setIsAnalyzing] = useState(false)
+  const [image, setImage] = useState<File | null>(null);
+  const [imagePreview, setImagePreview] = useState<string | null>(null);
+  const [uploadedUrl, setUploadedUrl] = useState<string | null>(null);
+  const [uploadedKey, setUploadedKey] = useState<string | null>(null);
+  const [prompt, setPrompt] = useState("");
+  const [isAnalyzing, setIsAnalyzing] = useState(false);
 
   const handleImageChange = (file: File | null) => {
-    setImage(file)
+    setImage(file);
     if (file) {
-      const reader = new FileReader()
+      const reader = new FileReader();
       reader.onloadend = () => {
-        setImagePreview(reader.result as string)
-      }
-      reader.readAsDataURL(file)
+        setImagePreview(reader.result as string);
+      };
+      reader.readAsDataURL(file);
     } else {
-      setImagePreview(null)
+      setImagePreview(null);
+      setUploadedUrl(null);
+      setUploadedKey(null);
     }
-  }
+  };
+
+  const handleUploadComplete = (url: string, key: string) => {
+    setUploadedUrl(url);
+    setUploadedKey(key);
+    console.log("[UploadThing] Upload complete:", { url, key });
+  };
 
   const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault()
-    if (!image || !prompt.trim()) return
+    e.preventDefault();
+    if (!image || !prompt.trim() || !uploadedUrl) return;
 
-    setIsAnalyzing(true)
+    setIsAnalyzing(true);
     // Simulate API call
-    await new Promise((resolve) => setTimeout(resolve, 2000))
-    setIsAnalyzing(false)
+    await new Promise((resolve) => setTimeout(resolve, 2000));
+    setIsAnalyzing(false);
 
-    // Here you would typically send the data to your API
-    console.log("[v0] Analyzing image with prompt:", prompt)
-  }
+    // Here you would send the uploaded image URL and prompt to your API
+    console.log("[Vibe Check] Analyzing image with prompt:", {
+      imageUrl: uploadedUrl,
+      imageKey: uploadedKey,
+      prompt,
+    });
+  };
 
-  const isFormValid = image && prompt.trim().length > 0
+  const isFormValid = image && prompt.trim().length > 0 && uploadedUrl !== null;
 
   return (
     <form onSubmit={handleSubmit} className="space-y-8">
@@ -48,29 +62,40 @@ export function UploadForm() {
         <div className="mb-6">
           <div className="mb-2 flex items-center gap-2">
             <Upload className="h-5 w-5 text-primary" />
-            <Label htmlFor="image-upload" className="text-lg font-semibold text-card-foreground">
+            <Label
+              htmlFor="image-upload"
+              className="text-lg font-semibold text-card-foreground"
+            >
               Step 1: Upload Your Design
             </Label>
           </div>
           <p className="text-sm leading-relaxed text-muted-foreground">
-            Upload your advertising design in JPG, PNG, or WebP format. Maximum file size: 10MB.
+            Upload your advertising design in JPG, PNG, or WebP format. Maximum
+            file size: 16MB.
           </p>
         </div>
 
-        <ImageUpload onImageChange={handleImageChange} imagePreview={imagePreview} />
+        <ImageUpload
+          onImageChange={handleImageChange}
+          onUploadComplete={handleUploadComplete}
+          imagePreview={imagePreview}
+        />
       </Card>
 
       <Card className="border-2 border-border bg-card p-6 shadow-sm sm:p-8">
         <div className="mb-6">
           <div className="mb-2 flex items-center gap-2">
             <Sparkles className="h-5 w-5 text-primary" />
-            <Label htmlFor="prompt" className="text-lg font-semibold text-card-foreground">
+            <Label
+              htmlFor="prompt"
+              className="text-lg font-semibold text-card-foreground"
+            >
               Step 2: Describe Your Query
             </Label>
           </div>
           <p className="text-sm leading-relaxed text-muted-foreground">
-            What advertising trends would you like to explore? Be specific about your industry, target audience, or
-            design elements.
+            What advertising trends would you like to explore? Be specific about
+            your industry, target audience, or design elements.
           </p>
         </div>
 
@@ -117,5 +142,5 @@ export function UploadForm() {
         </Button>
       </div>
     </form>
-  )
+  );
 }

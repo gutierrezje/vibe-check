@@ -1,5 +1,5 @@
-import { UploadForm } from '@/components/upload-form'
-import { TrendingUp, Zap } from 'lucide-react'
+import { UploadForm } from "@/components/upload-form";
+import { TrendingUp, Zap } from "lucide-react";
 
 function App() {
   return (
@@ -43,11 +43,14 @@ function App() {
         <UploadForm />
 
         <div className="mt-12 text-center text-sm text-muted-foreground">
-          <p>Your designs are analyzed using the latest advertising trends and best practices.</p>
+          <p>
+            Your designs are analyzed using the latest advertising trends and
+            best practices.
+          </p>
         </div>
       </div>
     </div>
-  )
+  );
 }
 
-export default App
+export default App;
