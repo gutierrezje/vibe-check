@@ -2,6 +2,7 @@ import type React from "react";
 
 import { useState } from "react";
 import { Upload, Sparkles, TrendingUp } from "lucide-react";
+import ReactMarkdown from "react-markdown";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import { Label } from "@/components/ui/label";
@@ -395,10 +396,8 @@ export function UploadForm() {
             </p>
           </div>
 
-          <div className="prose prose-sm max-w-none dark:prose-invert">
-            <div className="whitespace-pre-wrap rounded-lg bg-secondary/30 p-4 text-sm">
-              {analysisResult.analysis}
-            </div>
+          <div className="prose prose-sm max-w-none dark:prose-invert prose-headings:text-card-foreground prose-p:text-card-foreground prose-strong:text-card-foreground prose-li:text-card-foreground">
+            <ReactMarkdown>{analysisResult.analysis}</ReactMarkdown>
           </div>
 
           <div className="mt-6 flex gap-2">

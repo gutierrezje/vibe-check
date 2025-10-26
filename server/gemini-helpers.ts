@@ -82,143 +82,72 @@ export function getPlatformSpecificChecks(platform: string): string {
 export function buildAnalysisPrompt(context: AnalysisContext): string {
   const { industry, platform, targetAudience, goal } = context;
 
-  return `You are a senior creative director analyzing advertising performance.
+  return `You are a senior creative director analyzing advertising performance. Provide a concise, actionable analysis.
 
-**ANALYZE THIS AD CREATIVE:**
+## FIRST IMPRESSION
+**Scroll-Stop Score: X/10**
 
-## 1. FIRST IMPRESSION (3-Second Rule)
-- ⏱️ **Scroll-Stop Power**: Will this stop someone mid-scroll? (1-10)
-- 👁️ **Visual Hierarchy**: What catches the eye first, second, third?
-- 🎯 **Message Clarity**: Can you understand the offer in 3 seconds?
+In 2-3 sentences, explain:
+- Will this stop someone mid-scroll? Why or why not?
+- What's the immediate visual impact?
 
-## 2. DESIGN FUNDAMENTALS
-- 🎨 **Color Psychology**:
-  - Primary colors used and their emotional impact
-  - Color contrast ratio (readability)
-  - Does it match ${industry} conventions or break them strategically?
+## DESIGN QUALITY
+**Design Score: X/10**
 
-- ✍️ **Typography**:
-  - Font choices (modern, classic, bold, elegant?)
-  - Readability at small sizes (mobile consideration)
-  - Headline vs body text hierarchy
-  - Is there too much or too little text?
+Evaluate in 3-4 bullet points:
+- Color scheme and readability
+- Typography effectiveness (mobile-friendly?)
+- Image quality and authenticity
+- Overall professional polish
 
-- 📐 **Layout & Composition**:
-  - Rule of thirds compliance
-  - White space usage (breathing room)
-  - Visual balance and symmetry
-  - Focal point effectiveness
+## MESSAGE & CTA
+**Message Clarity: X/10**
 
-- 🖼️ **Imagery**:
-  - Image quality and resolution
-  - Authentic vs stock photo feel
-  - Product/service visibility
-  - Human faces (builds trust?)
+Assess:
+- Is the value proposition immediately clear?
+- Call-to-action strength and visibility
+- Copy effectiveness (benefit-focused vs feature-heavy)
 
-## 3. MARKETING EFFECTIVENESS
+## PLATFORM FIT (${platform})
+**Platform Optimization: X/10**
 
-- 💬 **Copy Impact**:
-  - Headline strength (compelling? benefit-focused?)
-  - Value proposition clarity
-  - Pain point addressing
-  - Feature vs benefit balance
+Key ${platform} considerations:
+${getPlatformSpecificChecks(platform)}
 
-- 🎯 **Call-to-Action**:
-  - CTA visibility and prominence
-  - Action verb strength ("Buy Now" vs "Get Started" vs "Learn More")
-  - Urgency/scarcity elements
-  - Multiple CTAs or single focus?
+Does this ad follow best practices? What's missing?
 
-- 🧠 **Psychological Triggers**:
-  - Social proof elements (testimonials, user count, ratings)
-  - Scarcity ("Limited time", "Only X left")
-  - Authority (credentials, certifications, awards)
-  - Reciprocity (free trial, discount, bonus)
-  - FOMO (fear of missing out)
+## AUDIENCE ALIGNMENT (${targetAudience})
+**Audience Fit: X/10**
 
-## 4. PLATFORM OPTIMIZATION (${platform})
+- Does the visual style and tone match ${targetAudience}?
+- Any cultural or demographic misalignments?
 
-- 📱 **${platform} Best Practices**:
-  ${getPlatformSpecificChecks(platform)}
+## PREDICTED PERFORMANCE (Goal: ${goal})
 
-- 🔧 **Technical Specs**:
-  - Aspect ratio correctness
-  - Safe zones for text (avoiding cutoff)
-  - File size/load time considerations
-  - Animated vs static appropriateness
+**Expected CTR**: X%
+**Conversion Potential**: Low/Medium/High
+**Overall Performance**: Top 10% / Top 25% / Average / Below Average
 
-## 5. AUDIENCE RESONANCE (${targetAudience})
+Brief justification (2-3 sentences)
 
-- 👥 **Target Audience Alignment**:
-  - Visual style matches age group preferences
-  - Language/tone appropriateness
-  - Cultural sensitivity and inclusivity
-  - Aspirational vs relatable balance
+## TOP 3 IMPROVEMENTS
 
-- 🌍 **Diversity & Inclusion**:
-  - Representation in imagery
-  - Accessible design (color blindness, dyslexia-friendly fonts)
-  - Universal appeal vs niche targeting
+List the 3 most impactful changes to make (prioritized):
 
-## 6. COMPETITIVE POSITIONING
+1. **[Change Type]**: Specific actionable recommendation
+2. **[Change Type]**: Specific actionable recommendation
+3. **[Change Type]**: Specific actionable recommendation
 
-- 🏆 **Differentiation**:
-  - Unique visual style vs category norms
-  - Standing out vs fitting in
-  - Memorable elements
-  - Brand personality expression
+## RED FLAGS
 
-- 📊 **Current Trends** (2025):
-  - Minimalism vs maximalism trend
-  - AI-generated imagery considerations
-  - Authenticity movement alignment
-  - Video-first world considerations (is static enough?)
-  - User-generated content (UGC) style
-  - Bold typography trends
-  - Gradient and glassmorphism usage
+Any critical issues that could hurt performance or compliance?
 
-## 7. CONVERSION POTENTIAL (Goal: ${goal})
+## FINAL VERDICT
+**Overall Score: X/10**
 
-- 💰 **Estimated Performance Metrics**:
-  - **CTR Prediction**: X% (based on design quality)
-  - **Engagement Rate**: Expected likes/shares/comments
-  - **Conversion Potential**: Low/Medium/High
-  - **A/B Test Priority**: Which element to test first
+One paragraph summary: Would you approve this ad? Why or why not? What's the single biggest strength and weakness?
 
-- ⚠️ **Red Flags**:
-  - Anything that might hurt performance
-  - Legal/compliance concerns (health claims, etc.)
-  - Brand safety issues
+---
 
-## 8. ACTIONABLE RECOMMENDATIONS
-
-Provide 3 tiers of improvements:
-
-**🚀 Quick Wins** (can implement in <1 hour):
-- Example: Increase CTA button size by 20%
-- Example: Change headline to benefit-focused
-
-**💡 Medium Impact** (1-3 hours of work):
-- Example: Replace stock photo with authentic imagery
-- Example: Adjust color scheme for better contrast
-
-**🎯 Major Overhaul** (if needed):
-- Example: Complete layout restructure
-- Example: Different creative concept
-
-## 9. COMPETITIVE COMPARISON
-
-How does this compare to typical ${industry} ads on ${platform}?
-- Better/Worse/Average
-- What are competitors doing differently?
-- Gaps in the market this could fill
-
-## 10. FINAL VERDICT
-
-- **Overall Score**: X/10
-- **Would I approve this ad?**: Yes/No and why
-- **Predicted Performance**: Top 10% / Top 25% / Average / Below Average
-- **One-Sentence Summary**: [Your summary here]
-
-Format your response with clear headings, use emojis for scannability, and be brutally honest but constructive.`;
+Keep responses concise and scannable. Focus on actionable insights marketing teams can act on immediately.`;
 }
