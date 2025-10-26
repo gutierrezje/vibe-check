@@ -316,19 +316,6 @@ export function UploadForm() {
             </Select>
           </div>
         </div>
-
-        <div className="mt-6 rounded-lg bg-secondary/50 p-4">
-          <p className="text-sm font-medium text-secondary-foreground">
-            <TrendingUp className="mb-1 mr-2 inline-block h-4 w-4" />
-            Analysis includes:
-          </p>
-          <ul className="mt-2 space-y-1 text-sm text-muted-foreground">
-            <li>• Current design trends in your industry</li>
-            <li>• Color schemes and typography patterns</li>
-            <li>• Engagement-driven layout strategies</li>
-            <li>• Platform-specific best practices</li>
-          </ul>
-        </div>
       </Card>
 
       <div className="flex justify-center">

@@ -13,7 +13,7 @@ function App() {
 
       {/* Show Main App for signed-in users */}
       <SignedIn>
-        <div className="min-h-screen bg-gradient-to-b from-background to-secondary/20">
+        <div className="min-h-screen bg-gradient-to-b from-[#f8f6f0] via-[#fdfbf7] to-[#f5f3ed]">
           {/* Header with User Button */}
           <header className="border-b border-border/40 bg-background/80 backdrop-blur-sm">
             <div className="mx-auto flex max-w-7xl items-center justify-between px-4 py-4 sm:px-6 lg:px-8">
@@ -69,6 +69,19 @@ function App() {
                   <span>Industry insights</span>
                 </div>
               </div>
+            </div>
+
+            <div className="my-6 rounded-lg bg-secondary/50 p-4">
+              <p className="text-sm font-medium text-secondary-foreground">
+                <TrendingUp className="mb-1 mr-2 inline-block h-4 w-4" />
+                Analysis includes:
+              </p>
+              <ul className="mt-2 space-y-1 text-sm text-muted-foreground">
+                <li>• Current design trends in your industry</li>
+                <li>• Color schemes and typography patterns</li>
+                <li>• Engagement-driven layout strategies</li>
+                <li>• Platform-specific best practices</li>
+              </ul>
             </div>
 
             <UploadForm />
