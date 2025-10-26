@@ -13,6 +13,7 @@ import { createUploadthing, type FileRouter } from "uploadthing/server";
 // createUploadthing() automatically uses UPLOADTHING_TOKEN from env
 const f = createUploadthing();
 
+// FIXME: implement auth and actual middleware
 // Define your file upload routes
 export const ourFileRouter = {
   // Image uploader route
