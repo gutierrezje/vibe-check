@@ -49,16 +49,31 @@ const GOALS = [
   { value: "app-installs", label: "App Installs" },
 ] as const;
 
+interface AnalysisResult {
+  success: boolean;
+  analysis: string;
+  context: {
+    industry: string;
+    platform: string;
+    targetAudience: string;
+    goal: string;
+  };
+  analyzedAt: string;
+}
+
 export function UploadForm() {
   const [image, setImage] = useState<File | null>(null);
   const [imagePreview, setImagePreview] = useState<string | null>(null);
   const [uploadedUrl, setUploadedUrl] = useState<string | null>(null);
-  const [uploadedKey, setUploadedKey] = useState<string | null>(null);
   const [industry, setIndustry] = useState("");
   const [targetAudience, setTargetAudience] = useState("");
   const [platform, setPlatform] = useState("");
   const [goal, setGoal] = useState("");
   const [isAnalyzing, setIsAnalyzing] = useState(false);
+  const [analysisResult, setAnalysisResult] = useState<AnalysisResult | null>(
+    null,
+  );
+  const [analysisError, setAnalysisError] = useState<string | null>(null);
 
   const handleImageChange = (file: File | null) => {
     setImage(file);
@@ -71,34 +86,76 @@ export function UploadForm() {
     } else {
       setImagePreview(null);
       setUploadedUrl(null);
-      setUploadedKey(null);
     }
   };
 
-  const handleUploadComplete = (url: string, key: string) => {
+  const handleUploadComplete = (url: string) => {
     setUploadedUrl(url);
-    setUploadedKey(key);
-    console.log("[UploadThing] Upload complete:", { url, key });
+    console.log("[UploadThing] Upload complete:", { url });
   };
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    if (!image || !uploadedUrl || !industry || !targetAudience || !platform || !goal) return;
+    if (
+      !image ||
+      !uploadedUrl ||
+      !industry ||
+      !targetAudience ||
+      !platform ||
+      !goal
+    )
+      return;
 
     setIsAnalyzing(true);
-    // Simulate API call
-    await new Promise((resolve) => setTimeout(resolve, 2000));
-    setIsAnalyzing(false);
+    setAnalysisError(null);
+    setAnalysisResult(null);
 
-    // Here you would send the uploaded image URL and analysis criteria to your API
-    console.log("[Vibe Check] Analyzing image with criteria:", {
-      imageUrl: uploadedUrl,
-      imageKey: uploadedKey,
-      industry,
-      targetAudience,
-      platform,
-      goal,
-    });
+    try {
+      // Determine API endpoint based on environment
+      const apiUrl = import.meta.env.PROD
+        ? "/api/analyze-ad"
+        : "http://localhost:8888/.netlify/functions/analyze-ad";
+
+      console.log("[Vibe Check] Analyzing image with criteria:", {
+        imageUrl: uploadedUrl,
+        industry,
+        targetAudience,
+        platform,
+        goal,
+      });
+
+      const response = await fetch(apiUrl, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          imageUrl: uploadedUrl,
+          industry,
+          platform,
+          targetAudience,
+          goal,
+        }),
+      });
+
+      if (!response.ok) {
+        const errorData = await response.json();
+        throw new Error(errorData.error || "Failed to analyze ad creative");
+      }
+
+      const result: AnalysisResult = await response.json();
+      setAnalysisResult(result);
+      console.log("[Vibe Check] Analysis complete:", result);
+    } catch (error) {
+      console.error("[Vibe Check] Analysis error:", error);
+      setAnalysisError(
+        error instanceof Error
+          ? error.message
+          : "Failed to analyze ad creative",
+      );
+    } finally {
+      setIsAnalyzing(false);
+    }
   };
 
   const isFormValid =
@@ -144,17 +201,24 @@ export function UploadForm() {
             </Label>
           </div>
           <p className="text-sm leading-relaxed text-muted-foreground">
-            Select your industry, target audience, platform, and campaign goal to get
-            relevant trend insights.
+            Select your industry, target audience, platform, and campaign goal
+            to get relevant trend insights.
           </p>
         </div>
 
         <div className="space-y-4">
           <div className="space-y-2">
-            <Label htmlFor="industry" className="text-sm font-medium text-foreground">
+            <Label
+              htmlFor="industry"
+              className="text-sm font-medium text-foreground"
+            >
               Industry
             </Label>
-            <Select value={industry} onValueChange={setIndustry} disabled={isAnalyzing}>
+            <Select
+              value={industry}
+              onValueChange={setIndustry}
+              disabled={isAnalyzing}
+            >
               <SelectTrigger
                 id="industry"
                 className="bg-background text-foreground"
@@ -172,7 +236,10 @@ export function UploadForm() {
           </div>
 
           <div className="space-y-2">
-            <Label htmlFor="audience" className="text-sm font-medium text-foreground">
+            <Label
+              htmlFor="audience"
+              className="text-sm font-medium text-foreground"
+            >
               Target Audience
             </Label>
             <Select
@@ -197,10 +264,17 @@ export function UploadForm() {
           </div>
 
           <div className="space-y-2">
-            <Label htmlFor="platform" className="text-sm font-medium text-foreground">
+            <Label
+              htmlFor="platform"
+              className="text-sm font-medium text-foreground"
+            >
               Platform
             </Label>
-            <Select value={platform} onValueChange={setPlatform} disabled={isAnalyzing}>
+            <Select
+              value={platform}
+              onValueChange={setPlatform}
+              disabled={isAnalyzing}
+            >
               <SelectTrigger
                 id="platform"
                 className="bg-background text-foreground"
@@ -218,7 +292,10 @@ export function UploadForm() {
           </div>
 
           <div className="space-y-2">
-            <Label htmlFor="goal" className="text-sm font-medium text-foreground">
+            <Label
+              htmlFor="goal"
+              className="text-sm font-medium text-foreground"
+            >
               Campaign Goal
             </Label>
             <Select value={goal} onValueChange={setGoal} disabled={isAnalyzing}>
@@ -273,6 +350,77 @@ export function UploadForm() {
           )}
         </Button>
       </div>
+
+      {/* Error Display */}
+      {analysisError && (
+        <Card className="border-2 border-red-500 bg-red-50 p-6 dark:bg-red-950/20">
+          <div className="flex items-start gap-3">
+            <div className="rounded-full bg-red-100 p-2 dark:bg-red-900/30">
+              <svg
+                className="h-5 w-5 text-red-600 dark:text-red-400"
+                fill="none"
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                strokeWidth="2"
+                viewBox="0 0 24 24"
+                stroke="currentColor"
+              >
+                <path d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+              </svg>
+            </div>
+            <div className="flex-1">
+              <h3 className="font-semibold text-red-900 dark:text-red-100">
+                Analysis Failed
+              </h3>
+              <p className="mt-1 text-sm text-red-700 dark:text-red-300">
+                {analysisError}
+              </p>
+            </div>
+          </div>
+        </Card>
+      )}
+
+      {/* Results Display */}
+      {analysisResult && (
+        <Card className="border-2 border-border bg-card p-6 shadow-sm sm:p-8">
+          <div className="mb-6">
+            <div className="mb-2 flex items-center gap-2">
+              <TrendingUp className="h-5 w-5 text-primary" />
+              <Label className="text-lg font-semibold text-card-foreground">
+                Analysis Results
+              </Label>
+            </div>
+            <p className="text-xs text-muted-foreground">
+              Analyzed on {new Date(analysisResult.analyzedAt).toLocaleString()}
+            </p>
+          </div>
+
+          <div className="prose prose-sm max-w-none dark:prose-invert">
+            <div className="whitespace-pre-wrap rounded-lg bg-secondary/30 p-4 text-sm">
+              {analysisResult.analysis}
+            </div>
+          </div>
+
+          <div className="mt-6 flex gap-2">
+            <Button
+              onClick={() => {
+                setAnalysisResult(null);
+                setImage(null);
+                setImagePreview(null);
+                setUploadedUrl(null);
+                setIndustry("");
+                setTargetAudience("");
+                setPlatform("");
+                setGoal("");
+              }}
+              variant="outline"
+              size="sm"
+            >
+              Analyze Another Ad
+            </Button>
+          </div>
+        </Card>
+      )}
     </form>
   );
 }

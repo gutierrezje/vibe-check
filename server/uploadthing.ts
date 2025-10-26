@@ -24,17 +24,17 @@ export const ourFileRouter = {
     },
   })
     .middleware(async ({ req }) => {
-      console.log("upload middleware called", req)
+      console.log("upload middleware called", req);
       return {};
     })
     .onUploadComplete(async ({ metadata, file }) => {
-    // This code runs on the server after upload completes
-    console.log("Upload complete for user:", metadata);
-    console.log("File URL:", file.url);
+      // This code runs on the server after upload completes
+      console.log("Upload complete for user:", metadata);
+      console.log("File URL:", file.url);
 
-    // Return data to the client
-    return { url: file.url, key: file.key, name: file.name };
-  }),
+      // Return data to the client
+      return { url: file.url, key: file.key, name: file.name };
+    }),
 } satisfies FileRouter;
 
 export type OurFileRouter = typeof ourFileRouter;

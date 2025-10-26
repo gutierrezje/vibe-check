@@ -16,6 +16,11 @@
   to = "/.netlify/functions/uploadthing/:splat"
   status = 200
 
+[[redirects]]
+  from = "/api/analyze-ad"
+  to = "/.netlify/functions/analyze-ad"
+  status = 200
+
 # SPA fallback for client-side routing
 [[redirects]]
   from = "/*"

@@ -9,7 +9,7 @@ import { useUploadThing } from "@/lib/uploadthing";
 
 interface ImageUploadProps {
   onImageChange: (file: File | null) => void;
-  onUploadComplete?: (url: string, key: string) => void;
+  onUploadComplete?: (url: string) => void;
   imagePreview: string | null;
 }
 
@@ -25,7 +25,7 @@ export function ImageUpload({
     onClientUploadComplete: (res) => {
       setIsUploading(false);
       if (res && res[0]) {
-        onUploadComplete?.(res[0].url, res[0].key);
+        onUploadComplete?.(res[0].url);
       }
     },
     onUploadError: (error: Error) => {

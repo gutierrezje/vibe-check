@@ -17,7 +17,8 @@ export const handler: Handler = async (event: HandlerEvent) => {
   // Handle CORS
   const headers = {
     "Access-Control-Allow-Origin": "*",
-    "Access-Control-Allow-Headers": "Content-Type, Authorization, x-uploadthing-version, x-uploadthing-api-key, x-uploadthing-fe-package, x-uploadthing-be-adapter",
+    "Access-Control-Allow-Headers":
+      "Content-Type, Authorization, x-uploadthing-version, x-uploadthing-api-key, x-uploadthing-fe-package, x-uploadthing-be-adapter",
     "Access-Control-Allow-Methods": "GET, POST, OPTIONS",
   };
 
@@ -35,7 +36,9 @@ export const handler: Handler = async (event: HandlerEvent) => {
     return {
       statusCode: 500,
       headers,
-      body: JSON.stringify({ error: "Server configuration error: UPLOADTHING_TOKEN not set" }),
+      body: JSON.stringify({
+        error: "Server configuration error: UPLOADTHING_TOKEN not set",
+      }),
     };
   }
 

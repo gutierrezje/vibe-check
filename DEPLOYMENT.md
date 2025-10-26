@@ -203,9 +203,9 @@ This runs only Vite. Note: UploadThing won't work without the backend function.
 
 ## Environment Variables Reference
 
-| Variable            | Description          | Where to Get                                     |
-| ------------------- | -------------------- | ------------------------------------------------ |
-| `UPLOADTHING_TOKEN` | API Token (v7)       | UploadThing Dashboard → API Keys → Copy Token   |
+| Variable            | Description    | Where to Get                                  |
+| ------------------- | -------------- | --------------------------------------------- |
+| `UPLOADTHING_TOKEN` | API Token (v7) | UploadThing Dashboard → API Keys → Copy Token |
 
 **Note:** UploadThing v7 uses a single token instead of separate SECRET and APP_ID.
 
