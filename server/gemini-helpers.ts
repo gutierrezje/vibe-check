@@ -83,6 +83,9 @@ export function buildAnalysisPrompt(context: AnalysisContext): string {
   const { industry, platform, targetAudience, goal } = context;
 
   return `You are a senior creative director analyzing advertising performance. Provide a concise, actionable analysis.
+  Keep in mind the industry of the user ${industry}.
+
+
 
 ## FIRST IMPRESSION
 **Scroll-Stop Score: X/10**
